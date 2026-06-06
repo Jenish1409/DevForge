@@ -15,5 +15,5 @@ public class ProjectRequest {
     private String description;
 
     @Builder.Default
-    private boolean requireApiKey = false;
+    private Boolean requireApiKey = false;
 }

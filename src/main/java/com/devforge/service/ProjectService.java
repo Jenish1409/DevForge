@@ -31,10 +31,13 @@ public class ProjectService {
     public ProjectResponse createProject(ProjectRequest request, String username) {
         User user = findUserByUsername(username);
 
+        // SAFELY EXTRACT THE BOOLEAN: Defaults to false if null
+        boolean shouldRequireKey = request.getRequireApiKey() != null && request.getRequireApiKey();
+
         Project project = Project.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .requireApiKey(request.isRequireApiKey())
+                .requireApiKey(shouldRequireKey) // Pass the safe primitive boolean here
                 .owner(user)
                 .build();
 

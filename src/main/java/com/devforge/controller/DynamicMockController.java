@@ -1,6 +1,6 @@
 package com.devforge.controller;
 
-import com.devforge.entity.MockEndpoint;
+import com.devforge.dto.CachedMockResponse;
 import com.devforge.service.MockEndpointService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -35,16 +35,16 @@ public class DynamicMockController {
         String method = request.getMethod();
         String subPath = extractSubPath(request.getRequestURI(), projectId);
 
-        MockEndpoint endpoint = mockEndpointService.executeMock(projectId, method, subPath);
-        request.setAttribute("mock.endpointId", endpoint.getId());
+        CachedMockResponse cached = mockEndpointService.executeMock(projectId, method, subPath);
+        request.setAttribute("mock.endpointId", cached.getEndpointId());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.CONTENT_TYPE, endpoint.getContentType());
+        headers.set(HttpHeaders.CONTENT_TYPE, cached.getContentType());
 
         return ResponseEntity
-                .status(endpoint.getStatusCode())
+                .status(cached.getStatusCode())
                 .headers(headers)
-                .body(endpoint.getResponseBody());
+                .body(cached.getResponseBody());
     }
 
     /**

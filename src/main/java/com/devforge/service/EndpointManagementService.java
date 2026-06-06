@@ -9,6 +9,8 @@ import com.devforge.repository.MockEndpointRepository;
 import com.devforge.repository.ProjectRepository;
 import com.devforge.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,7 @@ public class EndpointManagementService {
     private final MockEndpointRepository mockEndpointRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final CacheManager cacheManager;
 
     public List<EndpointResponse> getEndpoints(UUID projectId, String username) {
         findProjectWithOwnershipCheck(projectId, username);
@@ -44,6 +47,7 @@ public class EndpointManagementService {
                 .build();
 
         MockEndpoint saved = mockEndpointRepository.save(endpoint);
+        evictProjectCache(projectId);
         return toResponse(saved);
     }
 
@@ -54,6 +58,8 @@ public class EndpointManagementService {
         // Verify ownership through the project chain
         verifyOwnership(endpoint.getProject(), username);
 
+        UUID projectId = endpoint.getProject().getId();
+
         endpoint.setMethod(request.getMethod().toUpperCase());
         endpoint.setPath(request.getPath());
         endpoint.setStatusCode(request.getStatusCode());
@@ -61,6 +67,7 @@ public class EndpointManagementService {
         endpoint.setContentType(request.getContentType());
 
         MockEndpoint updated = mockEndpointRepository.save(endpoint);
+        evictProjectCache(projectId);
         return toResponse(updated);
     }
 
@@ -69,7 +76,20 @@ public class EndpointManagementService {
                 .orElseThrow(() -> new IllegalArgumentException("Endpoint not found: " + endpointId));
 
         verifyOwnership(endpoint.getProject(), username);
+        UUID projectId = endpoint.getProject().getId();
         mockEndpointRepository.delete(endpoint);
+        evictProjectCache(projectId);
+    }
+
+    /**
+     * Evicts the entire cache for a specific project.
+     * Only affects the target project — other projects' caches remain untouched.
+     */
+    private void evictProjectCache(UUID projectId) {
+        Cache cache = cacheManager.getCache("mock:" + projectId);
+        if (cache != null) {
+            cache.clear();
+        }
     }
 
     private Project findProjectWithOwnershipCheck(UUID projectId, String username) {

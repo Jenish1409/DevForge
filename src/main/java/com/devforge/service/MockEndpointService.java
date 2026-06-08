@@ -5,6 +5,7 @@ import com.devforge.entity.MockEndpoint;
 import com.devforge.exception.MockNotFoundException;
 import com.devforge.repository.MockEndpointRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MockEndpointService {
@@ -33,6 +35,9 @@ public class MockEndpointService {
      *   <li>On cache MISS → resolve via DB (exact match → AntPathMatcher) → cache → return</li>
      * </ol>
      *
+     * <p>If Redis is unavailable, all cache operations are silently skipped
+     * and the response is served directly from PostgreSQL.
+     *
      * @param projectId the project UUID as a string
      * @param method    the HTTP method (GET, POST, etc.)
      * @param fullPath  the trailing request path (e.g. {@code /users/42})
@@ -47,23 +52,41 @@ public class MockEndpointService {
         String cacheName = "mock:" + projectId;
 
         // 1. Try cache first
-        Cache cache = cacheManager.getCache(cacheName);
-        if (cache != null) {
-            CachedMockResponse cached = cache.get(cacheKey, CachedMockResponse.class);
-            if (cached != null) {
-                return cached;
-            }
+        CachedMockResponse cached = tryGetFromCache(cacheName, cacheKey);
+        if (cached != null) {
+            return cached;
         }
 
         // 2. Cache MISS — resolve from database
         CachedMockResponse response = resolveFromDatabase(uuid, upperMethod, fullPath);
 
         // 3. Store in cache
-        if (cache != null) {
-            cache.put(cacheKey, response);
-        }
+        tryPutInCache(cacheName, cacheKey, response);
 
         return response;
+    }
+
+    private CachedMockResponse tryGetFromCache(String cacheName, String cacheKey) {
+        try {
+            Cache cache = cacheManager.getCache(cacheName);
+            if (cache != null) {
+                return cache.get(cacheKey, CachedMockResponse.class);
+            }
+        } catch (Exception e) {
+            log.warn("Redis cache GET failure: {} - falling back to database", e.getMessage());
+        }
+        return null;
+    }
+
+    private void tryPutInCache(String cacheName, String cacheKey, CachedMockResponse response) {
+        try {
+            Cache cache = cacheManager.getCache(cacheName);
+            if (cache != null) {
+                cache.put(cacheKey, response);
+            }
+        } catch (Exception e) {
+            log.warn("Redis cache PUT failure: {} - data served but not cached", e.getMessage());
+        }
     }
 
     private CachedMockResponse resolveFromDatabase(UUID projectId, String method, String fullPath) {

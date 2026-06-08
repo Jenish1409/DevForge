@@ -9,6 +9,7 @@ import com.devforge.repository.MockEndpointRepository;
 import com.devforge.repository.ProjectRepository;
 import com.devforge.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EndpointManagementService {
@@ -86,9 +88,13 @@ public class EndpointManagementService {
      * Only affects the target project — other projects' caches remain untouched.
      */
     private void evictProjectCache(UUID projectId) {
-        Cache cache = cacheManager.getCache("mock:" + projectId);
-        if (cache != null) {
-            cache.clear();
+        try {
+            Cache cache = cacheManager.getCache("mock:" + projectId);
+            if (cache != null) {
+                cache.clear();
+            }
+        } catch (Exception e) {
+            log.warn("Redis cache EVICT failure: {} - stale data will expire via TTL", e.getMessage());
         }
     }
 

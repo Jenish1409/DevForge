@@ -18,4 +18,5 @@ public class CachedMockResponse implements Serializable {
     private int statusCode;
     private String responseBody;
     private String contentType;
+    private int delayMs;
 }

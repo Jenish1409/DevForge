@@ -10,3 +10,16 @@ export function createEndpoint(projectId, payload) {
     body: JSON.stringify(payload),
   })
 }
+
+export function updateEndpoint(projectId, endpointId, payload) {
+  return apiFetch(`/projects/${projectId}/endpoints/${endpointId}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function deleteEndpoint(projectId, endpointId) {
+  return apiFetch(`/projects/${projectId}/endpoints/${endpointId}`, {
+    method: 'DELETE',
+  })
+}

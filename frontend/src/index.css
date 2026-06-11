@@ -1,21 +1,28 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
   --font-sans: 'Inter', system-ui, sans-serif;
 }
 
 html {
-  color-scheme: dark;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
   font-family: var(--font-sans);
+  background-color: #fafafa;
+  color: #18181b;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dark body {
   background-color: #09090b;
   color: #e4e4e7;
-  -webkit-font-smoothing: antialiased;
 }
 
 #root {
@@ -32,10 +39,18 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
+  background: #d4d4d8;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
   background: #52525b;
 }

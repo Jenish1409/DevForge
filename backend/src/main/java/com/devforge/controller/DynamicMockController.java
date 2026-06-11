@@ -38,6 +38,15 @@ public class DynamicMockController {
         CachedMockResponse cached = mockEndpointService.executeMock(projectId, method, subPath);
         request.setAttribute("mock.endpointId", cached.getEndpointId());
 
+        // Simulate network delay if configured
+        if (cached.getDelayMs() > 0) {
+            try {
+                Thread.sleep(cached.getDelayMs());
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, cached.getContentType());
 

@@ -117,6 +117,7 @@ public class MockEndpointService {
                 .statusCode(endpoint.getStatusCode())
                 .responseBody(endpoint.getResponseBody())
                 .contentType(endpoint.getContentType())
+                .delayMs(endpoint.getDelayMs())
                 .build();
     }
 }

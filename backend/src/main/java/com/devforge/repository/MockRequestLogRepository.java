@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface MockRequestLogRepository extends JpaRepository<MockRequestLog, UUID> {
 
     List<MockRequestLog> findByProjectIdOrderByTimestampDesc(UUID projectId);
+
+    void deleteByProjectId(UUID projectId);
 }

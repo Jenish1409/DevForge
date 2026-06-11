@@ -62,6 +62,10 @@ public class MockEndpoint {
     @Builder.Default
     private String contentType = "application/json";
 
+    @Column(name = "delay_ms", nullable = false)
+    @Builder.Default
+    private int delayMs = 0;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

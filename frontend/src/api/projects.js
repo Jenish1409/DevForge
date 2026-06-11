@@ -10,3 +10,9 @@ export function createProject({ name, description, requireApiKey }) {
     body: JSON.stringify({ name, description, requireApiKey }),
   })
 }
+
+export function deleteProject(projectId) {
+  return apiFetch(`/projects/${projectId}`, {
+    method: 'DELETE',
+  })
+}

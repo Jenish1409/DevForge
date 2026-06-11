@@ -21,4 +21,7 @@ public class EndpointRequest {
 
     @Builder.Default
     private String contentType = "application/json";
+
+    @Builder.Default
+    private Integer delayMs = 0;
 }

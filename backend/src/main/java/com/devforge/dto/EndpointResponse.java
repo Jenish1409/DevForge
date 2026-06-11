@@ -20,5 +20,6 @@ public class EndpointResponse {
     private int statusCode;
     private String responseBody;
     private String contentType;
+    private int delayMs;
     private LocalDateTime createdAt;
 }

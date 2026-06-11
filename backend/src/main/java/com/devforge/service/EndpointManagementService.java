@@ -46,6 +46,7 @@ public class EndpointManagementService {
                 .statusCode(request.getStatusCode())
                 .responseBody(request.getResponseBody())
                 .contentType(request.getContentType())
+                .delayMs(request.getDelayMs() != null ? request.getDelayMs() : 0)
                 .build();
 
         MockEndpoint saved = mockEndpointRepository.save(endpoint);
@@ -67,6 +68,7 @@ public class EndpointManagementService {
         endpoint.setStatusCode(request.getStatusCode());
         endpoint.setResponseBody(request.getResponseBody());
         endpoint.setContentType(request.getContentType());
+        endpoint.setDelayMs(request.getDelayMs() != null ? request.getDelayMs() : 0);
 
         MockEndpoint updated = mockEndpointRepository.save(endpoint);
         evictProjectCache(projectId);
@@ -121,6 +123,7 @@ public class EndpointManagementService {
                 .statusCode(endpoint.getStatusCode())
                 .responseBody(endpoint.getResponseBody())
                 .contentType(endpoint.getContentType())
+                .delayMs(endpoint.getDelayMs())
                 .createdAt(endpoint.getCreatedAt())
                 .build();
     }

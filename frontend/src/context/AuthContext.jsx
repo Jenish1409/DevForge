@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback } from 'react'
 import { getToken } from '../api/client'
-import { login as apiLogin, logout as apiLogout } from '../api/auth'
+import { login as apiLogin, register as apiRegister, logout as apiLogout } from '../api/auth'
 
 const AuthContext = createContext(null)
 
@@ -12,13 +12,18 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(true)
   }, [])
 
+  const register = useCallback(async (username, email, password) => {
+    await apiRegister(username, email, password)
+    setIsAuthenticated(true)
+  }, [])
+
   const logout = useCallback(() => {
     apiLogout()
     setIsAuthenticated(false)
   }, [])
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )

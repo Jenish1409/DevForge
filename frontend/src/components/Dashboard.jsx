@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { fetchProjects, createProject } from '../api/projects'
+import { fetchProjects, createProject, deleteProject } from '../api/projects'
 import Sidebar from './Sidebar'
 import TopHeader from './TopHeader'
 import EndpointManager from './EndpointManager'
@@ -37,10 +37,20 @@ export default function Dashboard() {
     setSelectedId(created.id)
   }
 
+  async function handleDeleteProject() {
+    if (!selectedId) return
+    await deleteProject(selectedId)
+    setProjects((prev) => {
+      const remaining = prev.filter((p) => p.id !== selectedId)
+      setSelectedId(remaining.length > 0 ? remaining[0].id : null)
+      return remaining
+    })
+  }
+
   const activeProject = projects.find((p) => p.id === selectedId) ?? null
 
   return (
-    <div className="flex h-screen overflow-hidden bg-zinc-950">
+    <div className="flex h-screen overflow-hidden bg-zinc-100 dark:bg-zinc-950 transition-colors">
       <Sidebar
         projects={projects}
         selectedId={selectedId}
@@ -50,7 +60,7 @@ export default function Dashboard() {
       />
 
       <div className="flex-1 flex flex-col min-w-0">
-        <TopHeader project={activeProject} />
+        <TopHeader project={activeProject} onDeleteProject={handleDeleteProject} />
         <EndpointManager projectId={selectedId} />
       </div>
 

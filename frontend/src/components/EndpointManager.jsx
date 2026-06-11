@@ -3,6 +3,7 @@ import { Plus, Loader2, Route, Pencil, Trash2 } from 'lucide-react'
 import { fetchEndpoints, createEndpoint, updateEndpoint, deleteEndpoint } from '../api/endpoints'
 import MethodBadge from './MethodBadge'
 import EndpointFormDrawer from './EndpointFormDrawer'
+import { useToast } from '../context/ToastContext'
 
 export default function EndpointManager({ projectId }) {
   const [endpoints, setEndpoints] = useState([])
@@ -10,6 +11,7 @@ export default function EndpointManager({ projectId }) {
   const [error, setError] = useState('')
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [editingEndpoint, setEditingEndpoint] = useState(null)
+  const { showToast } = useToast()
 
   const loadEndpoints = useCallback(async () => {
     if (!projectId) return
@@ -46,13 +48,25 @@ export default function EndpointManager({ projectId }) {
   }
 
   async function handleCreate(payload) {
-    const created = await createEndpoint(projectId, payload)
-    setEndpoints((prev) => [...prev, created])
+    try {
+      const created = await createEndpoint(projectId, payload)
+      setEndpoints((prev) => [...prev, created])
+      showToast(`Endpoint ${payload.method} ${payload.path} created!`, 'success')
+    } catch (err) {
+      showToast(err.message || 'Failed to create endpoint', 'error')
+      throw err
+    }
   }
 
   async function handleUpdate(endpointId, payload) {
-    const updated = await updateEndpoint(projectId, endpointId, payload)
-    setEndpoints((prev) => prev.map((ep) => (ep.id === endpointId ? updated : ep)))
+    try {
+      const updated = await updateEndpoint(projectId, endpointId, payload)
+      setEndpoints((prev) => prev.map((ep) => (ep.id === endpointId ? updated : ep)))
+      showToast(`Endpoint updated successfully!`, 'success')
+    } catch (err) {
+      showToast(err.message || 'Failed to update endpoint', 'error')
+      throw err
+    }
   }
 
   async function handleDelete(endpointId) {
@@ -60,8 +74,10 @@ export default function EndpointManager({ projectId }) {
     try {
       await deleteEndpoint(projectId, endpointId)
       setEndpoints((prev) => prev.filter((ep) => ep.id !== endpointId))
+      showToast('Endpoint deleted successfully.', 'success')
     } catch (err) {
       setError(err.message || 'Failed to delete endpoint')
+      showToast(err.message || 'Failed to delete endpoint', 'error')
     }
   }
 
@@ -102,9 +118,31 @@ export default function EndpointManager({ projectId }) {
         )}
 
         {loading ? (
-          <div className="flex items-center justify-center py-16 text-zinc-500">
-            <Loader2 className="w-5 h-5 animate-spin mr-2" />
-            Loading endpoints…
+          <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900/10 shadow-sm animate-pulse transition-colors">
+            <div className="border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/80 px-4 py-3 flex gap-4">
+              <div className="h-4 w-16 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+              <div className="h-4 w-32 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+              <div className="h-4 w-12 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+              <div className="h-4 w-24 bg-zinc-200 dark:bg-zinc-800 rounded hidden md:block"></div>
+              <div className="h-4 w-48 bg-zinc-200 dark:bg-zinc-800 rounded hidden lg:block"></div>
+            </div>
+            <div className="divide-y divide-zinc-150 dark:divide-zinc-800/60">
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="px-4 py-4 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="h-6 w-16 bg-zinc-200 dark:bg-zinc-800 rounded-md"></div>
+                    <div className="h-4 w-40 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+                    <div className="h-4 w-8 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+                    <div className="h-4 w-24 bg-zinc-200 dark:bg-zinc-800 rounded hidden md:block"></div>
+                    <div className="h-3.5 w-60 bg-zinc-100 dark:bg-zinc-800/50 rounded hidden lg:block"></div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="h-8 w-8 bg-zinc-200 dark:bg-zinc-800 rounded-lg"></div>
+                    <div className="h-8 w-8 bg-zinc-200 dark:bg-zinc-800 rounded-lg"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ) : endpoints.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-800 bg-white/50 dark:bg-transparent">

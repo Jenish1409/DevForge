@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { Copy, Check, KeyRound, Trash2 } from 'lucide-react'
 import { getMockBaseUrl } from '../api/client'
 import DeleteProjectModal from './DeleteProjectModal'
+import { useToast } from '../context/ToastContext'
 
 export default function TopHeader({ project, onDeleteProject }) {
   const [copiedUrl, setCopiedUrl] = useState(false)
   const [copiedKey, setCopiedKey] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const { showToast } = useToast()
 
   if (!project) {
     return (
@@ -21,12 +23,14 @@ export default function TopHeader({ project, onDeleteProject }) {
   async function handleCopyUrl() {
     await navigator.clipboard.writeText(mockUrl)
     setCopiedUrl(true)
+    showToast('Base URL copied to clipboard!', 'success')
     setTimeout(() => setCopiedUrl(false), 2000)
   }
 
   async function handleCopyKey() {
     await navigator.clipboard.writeText(project.apiKey)
     setCopiedKey(true)
+    showToast('API Key copied to clipboard!', 'success')
     setTimeout(() => setCopiedKey(false), 2000)
   }
 

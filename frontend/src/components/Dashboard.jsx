@@ -4,12 +4,14 @@ import Sidebar from './Sidebar'
 import TopHeader from './TopHeader'
 import EndpointManager from './EndpointManager'
 import NewProjectModal from './NewProjectModal'
+import { useToast } from '../context/ToastContext'
 
 export default function Dashboard() {
   const [projects, setProjects] = useState([])
   const [selectedId, setSelectedId] = useState(null)
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
+  const { showToast } = useToast()
 
   const loadProjects = useCallback(async () => {
     setLoading(true)
@@ -32,25 +34,36 @@ export default function Dashboard() {
   }, [loadProjects])
 
   async function handleCreateProject(payload) {
-    const created = await createProject(payload)
-    setProjects((prev) => [...prev, created])
-    setSelectedId(created.id)
+    try {
+      const created = await createProject(payload)
+      setProjects((prev) => [...prev, created])
+      setSelectedId(created.id)
+      showToast(`Project "${created.name}" created successfully!`, 'success')
+    } catch (err) {
+      showToast(err.message || 'Failed to create project', 'error')
+    }
   }
 
   async function handleDeleteProject() {
     if (!selectedId) return
-    await deleteProject(selectedId)
-    setProjects((prev) => {
-      const remaining = prev.filter((p) => p.id !== selectedId)
-      setSelectedId(remaining.length > 0 ? remaining[0].id : null)
-      return remaining
-    })
+    const name = activeProject?.name || 'Project'
+    try {
+      await deleteProject(selectedId)
+      setProjects((prev) => {
+        const remaining = prev.filter((p) => p.id !== selectedId)
+        setSelectedId(remaining.length > 0 ? remaining[0].id : null)
+        return remaining
+      })
+      showToast(`Project "${name}" deleted.`, 'success')
+    } catch (err) {
+      showToast(err.message || 'Failed to delete project', 'error')
+    }
   }
 
   const activeProject = projects.find((p) => p.id === selectedId) ?? null
 
   return (
-    <div className="flex h-screen overflow-hidden bg-zinc-100 dark:bg-zinc-950 transition-colors">
+    <div className="flex h-screen overflow-hidden bg-zinc-100 dark:bg-zinc-950 transition-colors animate-fade-in">
       <Sidebar
         projects={projects}
         selectedId={selectedId}

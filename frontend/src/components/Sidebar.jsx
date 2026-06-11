@@ -32,30 +32,37 @@ export default function Sidebar({ projects, selectedId, onSelect, onNewProject, 
       <div className="px-3 py-3">
         <button
           onClick={onNewProject}
-          className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-emerald-500/50 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/5 hover:bg-emerald-100 dark:hover:bg-emerald-500/10 hover:border-emerald-500/70 dark:hover:border-emerald-500/60 px-3 py-2.5 text-sm font-medium text-emerald-700 dark:text-emerald-400 transition-colors"
+          className="w-full flex items-center justify-center gap-2 rounded-lg border border-dashed border-emerald-500/50 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/5 hover:bg-emerald-100 dark:hover:bg-emerald-500/10 hover:border-emerald-500/70 dark:hover:border-emerald-500/60 px-3 py-2.5 text-sm font-medium text-emerald-700 dark:text-emerald-400 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
         >
           <Plus className="w-4 h-4" />
           New Project
         </button>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-3 pb-3 space-y-0.5">
+      <nav className="flex-1 overflow-y-auto px-3 pb-3 space-y-2">
         {loading && (
-          <p className="px-3 py-2 text-xs text-zinc-500">Loading projects…</p>
+          <div className="space-y-2">
+            {[1, 2, 3].map((n) => (
+              <div key={n} className="h-14 w-full bg-zinc-100 dark:bg-zinc-800/45 rounded-lg animate-pulse border border-zinc-200/40 dark:border-zinc-800/40 flex flex-col justify-center px-3 gap-1.5">
+                <div className="h-3 w-2/3 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
+                <div className="h-2 w-1/2 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
+              </div>
+            ))}
+          </div>
         )}
         {!loading && projects.length === 0 && (
           <p className="px-3 py-2 text-xs text-zinc-500">No projects yet</p>
         )}
-        {projects.map((project) => {
+        {!loading && projects.map((project) => {
           const isSelected = selectedId === project.id
           return (
             <button
               key={project.id}
               onClick={() => onSelect(project.id)}
-              className={`w-full text-left rounded-lg px-3 py-2.5 transition-all border ${
+              className={`w-full text-left rounded-lg px-3 py-2.5 transition-all duration-200 border hover:-translate-y-0.5 ${
                 isSelected
-                  ? 'bg-emerald-50 dark:bg-zinc-800 border-emerald-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm border-l-[3px] border-l-emerald-500'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-200 border-transparent'
+                  ? 'bg-emerald-50 dark:bg-zinc-800 border-emerald-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-md border-l-[3px] border-l-emerald-500'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/30 hover:text-zinc-900 dark:hover:text-zinc-200 border-transparent'
               }`}
             >
               <p className="text-sm font-medium truncate">{project.name}</p>

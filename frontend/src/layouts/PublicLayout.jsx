@@ -1,8 +1,9 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import Navbar from '../components/marketing/Navbar'
 import Footer from '../components/marketing/Footer'
 
 export default function PublicLayout() {
+  const location = useLocation()
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
@@ -18,7 +19,7 @@ export default function PublicLayout() {
       </div>
 
       <Navbar />
-      <main className="relative flex-1">
+      <main key={location.pathname} className="relative flex-1 animate-fade-in">
         <Outlet />
       </main>
       <Footer />

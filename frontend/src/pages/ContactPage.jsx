@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Mail, Send, MessageSquare, Loader2, CheckCircle } from 'lucide-react'
 import { submitContact } from '../api/auth'
+import { useToast } from '../context/ToastContext'
 
 export default function ContactPage() {
   const [name, setName] = useState('')
@@ -9,6 +10,7 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
+  const { showToast } = useToast()
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -18,11 +20,13 @@ export default function ContactPage() {
     try {
       await submitContact(name, email, message)
       setSuccess(true)
+      showToast("Message sent! We'll get back to you soon.", 'success')
       setName('')
       setEmail('')
       setMessage('')
     } catch (err) {
       setError(err.message || 'Failed to send message')
+      showToast(err.message || 'Failed to send message', 'error')
     } finally {
       setLoading(false)
     }

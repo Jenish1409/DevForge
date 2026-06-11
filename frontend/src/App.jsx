@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import PublicLayout from './layouts/PublicLayout'
 import HomePage from './pages/HomePage'
+import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
 import LoginView from './components/LoginView'
 import Dashboard from './components/Dashboard'
@@ -12,6 +13,7 @@ export default function App() {
     <Routes>
       <Route element={<PublicLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="about" element={<AboutPage />} />
         <Route path="contact" element={<ContactPage />} />
       </Route>
 

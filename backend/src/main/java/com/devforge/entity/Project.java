@@ -46,8 +46,8 @@ public class Project {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @Column(name = "api_key", nullable = false, unique = true, length = 36)
-    private String apiKey;
+    @Column(name = "api_key_hash", nullable = false, unique = true, length = 64)
+    private String apiKeyHash;
 
     @Column(name = "require_api_key", nullable = false)
     @Builder.Default
@@ -65,7 +65,6 @@ public class Project {
 
     @PrePersist
     protected void onCreate() {
-        this.apiKey = UUID.randomUUID().toString();
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }

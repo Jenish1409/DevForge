@@ -7,6 +7,7 @@ import com.devforge.entity.User;
 import com.devforge.repository.MockRequestLogRepository;
 import com.devforge.repository.ProjectRepository;
 import com.devforge.repository.UserRepository;
+import com.devforge.util.ApiKeyUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
@@ -32,7 +33,7 @@ public class ProjectService {
         User user = findUserByUsername(username);
         return projectRepository.findByOwnerId(user.getId())
                 .stream()
-                .map(this::toResponse)
+                .map(p -> toResponse(p, null)) // Never expose key on list queries
                 .collect(Collectors.toList());
     }
 
@@ -42,15 +43,22 @@ public class ProjectService {
         // SAFELY EXTRACT THE BOOLEAN: Defaults to false if null
         boolean shouldRequireKey = request.getRequireApiKey() != null && request.getRequireApiKey();
 
+        // Generate plaintext key and its SHA-256 hash
+        String plaintextKey = ApiKeyUtil.generatePlaintextKey();
+        String keyHash = ApiKeyUtil.sha256Hex(plaintextKey);
+
         Project project = Project.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .requireApiKey(shouldRequireKey) // Pass the safe primitive boolean here
+                .requireApiKey(shouldRequireKey)
+                .apiKeyHash(keyHash)
                 .owner(user)
                 .build();
 
         Project saved = projectRepository.save(project);
-        return toResponse(saved);
+
+        // Return plaintext key EXACTLY ONCE in the creation response
+        return toResponse(saved, plaintextKey);
     }
 
     @Transactional
@@ -73,6 +81,34 @@ public class ProjectService {
         evictProjectCache(projectId);
     }
 
+    @Transactional
+    public ProjectResponse rotateProjectApiKey(UUID projectId, String username) {
+        User user = findUserByUsername(username);
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + projectId));
+
+        if (!project.getOwner().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("You do not own this project");
+        }
+
+        if (!project.isRequireApiKey()) {
+            throw new IllegalArgumentException("This project does not require an API key");
+        }
+
+        // Generate new plaintext key and its SHA-256 hash
+        String newPlaintextKey = ApiKeyUtil.generatePlaintextKey();
+        String newKeyHash = ApiKeyUtil.sha256Hex(newPlaintextKey);
+
+        project.setApiKeyHash(newKeyHash);
+        Project saved = projectRepository.save(project);
+
+        // Evict the old cache because the old hashed API key is no longer valid
+        evictProjectCache(projectId);
+
+        // Return plaintext key EXACTLY ONCE in the response
+        return toResponse(saved, newPlaintextKey);
+    }
+
     private void evictProjectCache(UUID projectId) {
         try {
             Cache cache = cacheManager.getCache("mock:" + projectId);
@@ -89,13 +125,19 @@ public class ProjectService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + username));
     }
 
-    private ProjectResponse toResponse(Project project) {
+    /**
+     * Maps a Project entity to a ProjectResponse.
+     *
+     * @param project      the project entity
+     * @param plaintextKey if non-null, includes the one-time plaintext API key in the response
+     */
+    private ProjectResponse toResponse(Project project, String plaintextKey) {
         return ProjectResponse.builder()
                 .id(project.getId())
                 .name(project.getName())
                 .description(project.getDescription())
                 .ownerUsername(project.getOwner().getUsername())
-                .apiKey(project.getApiKey())
+                .apiKey(plaintextKey) // null on list/get, populated only on create
                 .requireApiKey(project.isRequireApiKey())
                 .createdAt(project.getCreatedAt())
                 .build();

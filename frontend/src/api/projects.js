@@ -16,3 +16,9 @@ export function deleteProject(projectId) {
     method: 'DELETE',
   })
 }
+
+export function rotateApiKey(projectId) {
+  return apiFetch(`/projects/${projectId}/rotate-key`, {
+    method: 'POST',
+  })
+}

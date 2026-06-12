@@ -5,6 +5,7 @@ import com.devforge.exception.InvalidApiKeyException;
 import com.devforge.exception.RateLimitExceededException;
 import com.devforge.repository.ProjectRepository;
 import com.devforge.service.RateLimitingService;
+import com.devforge.util.ApiKeyUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -35,26 +36,8 @@ public class MockSecurityInterceptor implements HandlerInterceptor {
             throw new RateLimitExceededException(ipAddress);
         }
 
-        // Step 2: Extract projectId and check API key requirement
-        UUID projectId = extractProjectId(request.getRequestURI());
-        if (projectId == null) {
-            return true; // Can't resolve project — let the controller handle the error
-        }
-
-        Optional<Project> projectOpt = projectRepository.findById(projectId);
-        if (projectOpt.isEmpty()) {
-            return true; // Project not found — let the controller handle the 404
-        }
-
-        Project project = projectOpt.get();
-
-        // Step 3: Validate API key if required
-        if (project.isRequireApiKey()) {
-            String providedKey = request.getHeader("X-API-Key");
-            if (providedKey == null || !providedKey.equals(project.getApiKey())) {
-                throw new InvalidApiKeyException();
-            }
-        }
+        // Project and API key validation are now deferred to MockEndpointService
+        // to enable zero-database-hit caching.
 
         return true;
     }

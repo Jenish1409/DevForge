@@ -160,7 +160,12 @@ export default function LoginView() {
   // Focus first OTP input when entering the OTP step
   useEffect(() => {
     if (signupStep === 'otp') {
-      otpRefs.current[0]?.focus()
+      // Delay focus to let the CSS slide transition complete, and use preventScroll
+      // to stop the browser from auto-scrolling the overflow-hidden container,
+      // which causes a double-shift UI bug.
+      setTimeout(() => {
+        otpRefs.current[0]?.focus({ preventScroll: true })
+      }, 500)
     }
   }, [signupStep])
 
@@ -407,9 +412,14 @@ export default function LoginView() {
                     ))}
                   </div>
 
-                  <p className="text-center text-xs text-zinc-500">
-                    Code expires in 5 minutes
-                  </p>
+                  <div className="text-center space-y-1">
+                    <p className="text-xs text-zinc-500">
+                      Code expires in 5 minutes
+                    </p>
+                    <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                      Don't see the email? Please check your spam folder.
+                    </p>
+                  </div>
 
                   <button
                     type="submit"

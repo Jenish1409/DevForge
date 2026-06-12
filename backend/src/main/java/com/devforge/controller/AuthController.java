@@ -5,6 +5,7 @@ import com.devforge.dto.LoginRequest;
 import com.devforge.dto.OtpInitRequest;
 import com.devforge.dto.OtpVerifyRequest;
 import com.devforge.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +24,19 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register/init")
-    public ResponseEntity<Map<String, String>> registerInit(@RequestBody OtpInitRequest request) {
+    public ResponseEntity<Map<String, String>> registerInit(@Valid @RequestBody OtpInitRequest request) {
         authService.initRegistration(request);
         return ResponseEntity.ok(Map.of("message", "OTP sent to " + request.getEmail()));
     }
 
     @PostMapping("/register/verify")
-    public ResponseEntity<AuthResponse> registerVerify(@RequestBody OtpVerifyRequest request) {
+    public ResponseEntity<AuthResponse> registerVerify(@Valid @RequestBody OtpVerifyRequest request) {
         AuthResponse response = authService.verifyRegistration(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request);
         return ResponseEntity.ok(response);
     }

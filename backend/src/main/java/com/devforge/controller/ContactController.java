@@ -2,6 +2,7 @@ package com.devforge.controller;
 
 import com.devforge.dto.ContactRequest;
 import com.devforge.service.EmailService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +24,8 @@ public class ContactController {
     private String adminEmail;
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> submitContact(@RequestBody ContactRequest request) {
-        if (request.getName() == null || request.getName().isBlank()) {
-            throw new IllegalArgumentException("Name is required");
-        }
-        if (request.getEmail() == null || request.getEmail().isBlank()) {
-            throw new IllegalArgumentException("Email is required");
-        }
-        if (request.getMessage() == null || request.getMessage().isBlank()) {
-            throw new IllegalArgumentException("Message is required");
-        }
-
+    public ResponseEntity<Map<String, String>> submitContact(@Valid @RequestBody ContactRequest request) {
         emailService.sendContactEmail(adminEmail, request.getName(), request.getEmail(), request.getMessage());
-
         return ResponseEntity.ok(Map.of("message", "Message sent successfully"));
     }
 }

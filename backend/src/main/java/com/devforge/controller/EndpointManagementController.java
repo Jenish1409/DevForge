@@ -3,6 +3,7 @@ package com.devforge.controller;
 import com.devforge.dto.EndpointRequest;
 import com.devforge.dto.EndpointResponse;
 import com.devforge.service.EndpointManagementService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class EndpointManagementController {
     @PostMapping
     public ResponseEntity<EndpointResponse> createEndpoint(
             @PathVariable UUID projectId,
-            @RequestBody EndpointRequest request,
+            @Valid @RequestBody EndpointRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
         EndpointResponse endpoint = endpointManagementService
                 .createEndpoint(projectId, request, userDetails.getUsername());
@@ -50,7 +51,7 @@ public class EndpointManagementController {
     public ResponseEntity<EndpointResponse> updateEndpoint(
             @PathVariable UUID projectId,
             @PathVariable UUID endpointId,
-            @RequestBody EndpointRequest request,
+            @Valid @RequestBody EndpointRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
         EndpointResponse endpoint = endpointManagementService
                 .updateEndpoint(endpointId, request, userDetails.getUsername());

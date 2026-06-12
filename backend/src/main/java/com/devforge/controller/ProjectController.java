@@ -3,6 +3,7 @@ package com.devforge.controller;
 import com.devforge.dto.ProjectRequest;
 import com.devforge.dto.ProjectResponse;
 import com.devforge.service.ProjectService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +36,18 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<ProjectResponse> createProject(
-            @RequestBody ProjectRequest request,
+            @Valid @RequestBody ProjectRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
         ProjectResponse project = projectService.createProject(request, userDetails.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED).body(project);
+    }
+
+    @PostMapping("/{projectId}/rotate-key")
+    public ResponseEntity<ProjectResponse> rotateKey(
+            @PathVariable UUID projectId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        ProjectResponse project = projectService.rotateProjectApiKey(projectId, userDetails.getUsername());
+        return ResponseEntity.ok(project);
     }
 
     @DeleteMapping("/{projectId}")

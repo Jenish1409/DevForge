@@ -34,8 +34,9 @@ public class DynamicMockController {
                                                      HttpServletRequest request) {
         String method = request.getMethod();
         String subPath = extractSubPath(request.getRequestURI(), projectId);
+        String providedApiKey = request.getHeader("X-API-Key");
 
-        CachedMockResponse cached = mockEndpointService.executeMock(projectId, method, subPath);
+        CachedMockResponse cached = mockEndpointService.executeMock(projectId, method, subPath, providedApiKey);
         request.setAttribute("mock.endpointId", cached.getEndpointId());
 
         // Simulate network delay if configured

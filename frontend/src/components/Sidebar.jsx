@@ -17,12 +17,10 @@ export default function Sidebar({ projects, selectedId, onSelect, onNewProject, 
       <div className="px-4 py-5 border-b border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="flex items-center justify-center w-8 h-8 rounded-md bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shrink-0">
-              <FolderKanban className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            </div>
+            <img src="/logo.png" alt="DevForge Logo" className="h-10 w-auto object-contain drop-shadow-sm shrink-0" />
             <div className="min-w-0">
               <h1 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">DevForge</h1>
-              <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Projects</p>
+              <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Workspace</p>
             </div>
           </div>
           <ThemeToggle />

@@ -1,7 +1,27 @@
 import { useState, useEffect } from 'react'
 import { X, Loader2 } from 'lucide-react'
 
-const HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
+const HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']
+
+const STATUS_CODES = [
+  { value: 200, label: '200 OK' },
+  { value: 201, label: '201 Created' },
+  { value: 204, label: '204 No Content' },
+  { value: 400, label: '400 Bad Request' },
+  { value: 401, label: '401 Unauthorized' },
+  { value: 403, label: '403 Forbidden' },
+  { value: 404, label: '404 Not Found' },
+  { value: 500, label: '500 Server Error' },
+  { value: 502, label: '502 Bad Gateway' },
+  { value: 503, label: '503 Service Unavailable' }
+]
+
+const CONTENT_TYPES = [
+  'application/json',
+  'application/xml',
+  'text/html',
+  'text/plain',
+]
 
 const EMPTY_FORM = {
   method: 'GET',
@@ -93,6 +113,19 @@ export default function EndpointFormDrawer({ open, onClose, onCreate, onUpdate, 
     }
   }
 
+  let badgeText = 'response.txt'
+  let placeholderText = 'Your response body here...'
+  if (contentType.includes('json')) {
+    badgeText = 'response.json'
+    placeholderText = '{\n  "key": "value"\n}'
+  } else if (contentType.includes('xml')) {
+    badgeText = 'response.xml'
+    placeholderText = '<root>\n  <key>value</key>\n</root>'
+  } else if (contentType.includes('html')) {
+    badgeText = 'response.html'
+    placeholderText = '<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Hello</h1>\n  </body>\n</html>'
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div className="absolute inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm" onClick={handleClose} />
@@ -139,15 +172,22 @@ export default function EndpointFormDrawer({ open, onClose, onCreate, onUpdate, 
               <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 uppercase tracking-wider">
                 Status Code
               </label>
-              <input
-                type="number"
+              <select
                 value={statusCode}
                 onChange={(e) => setStatusCode(Number(e.target.value))}
-                min={100}
-                max={599}
                 required
                 className={`${fieldClass} font-mono`}
-              />
+              >
+                {/* Dynamically include the current statusCode if it's not in our predefined list (e.g. from a legacy edit) */}
+                {!STATUS_CODES.some(c => c.value === statusCode) && (
+                  <option value={statusCode}>{statusCode} Custom</option>
+                )}
+                {STATUS_CODES.map((status) => (
+                  <option key={status.value} value={status.value}>
+                    {status.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -169,12 +209,20 @@ export default function EndpointFormDrawer({ open, onClose, onCreate, onUpdate, 
             <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 uppercase tracking-wider">
               Content Type
             </label>
-            <input
-              type="text"
+            <select
               value={contentType}
               onChange={(e) => setContentType(e.target.value)}
               className={`${fieldClass} font-mono`}
-            />
+            >
+              {!CONTENT_TYPES.includes(contentType) && contentType && (
+                <option value={contentType}>{contentType}</option>
+              )}
+              {CONTENT_TYPES.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
@@ -203,7 +251,7 @@ export default function EndpointFormDrawer({ open, onClose, onCreate, onUpdate, 
                 <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500/70" />
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
-                <span className="ml-2 text-[10px] text-zinc-500 font-mono">response.json</span>
+                <span className="ml-2 text-[10px] text-zinc-500 font-mono">{badgeText}</span>
               </div>
               <textarea
                 value={responseBody}
@@ -211,7 +259,7 @@ export default function EndpointFormDrawer({ open, onClose, onCreate, onUpdate, 
                 rows={14}
                 spellCheck={false}
                 className="w-full bg-zinc-50 dark:bg-zinc-950 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300/90 font-mono leading-relaxed outline-none resize-none"
-                placeholder='{"key": "value"}'
+                placeholder={placeholderText}
               />
             </div>
           </div>

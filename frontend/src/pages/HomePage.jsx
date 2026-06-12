@@ -204,7 +204,7 @@ export default function HomePage() {
           <div className="lg:col-span-6 space-y-6 text-left animate-fade-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-4 py-1.5 text-xs font-mono text-emerald-700 dark:text-emerald-400 shadow-sm shadow-emerald-500/5">
               <Sparkles className="h-3.5 w-3.5 animate-pulse text-emerald-500" />
-              <span>v1.2 — Live Sandbox Simulator Included</span>
+              <span>Stop waiting for the backend to be finished</span>
             </div>
 
             <h1 className="text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-5xl lg:text-6xl leading-tight">

@@ -195,15 +195,11 @@ export default function LoginView() {
       <div className="relative w-full max-w-md">
         <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/80 backdrop-blur-sm shadow-xl dark:shadow-2xl shadow-zinc-300/40 dark:shadow-emerald-500/5 ring-1 ring-zinc-200/60 dark:ring-0 transition-colors">
           <div className="px-8 pt-8 pb-2 text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 mb-4 shadow-sm dark:shadow-lg dark:shadow-emerald-500/10">
-              {signupStep === 'otp' ? (
-                <ShieldCheck className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-              ) : (
-                <Terminal className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-              )}
+            <div className="flex justify-center mb-6">
+              <img src="/logo.png" alt="DevForge Logo" className="h-14 w-auto drop-shadow-md" />
             </div>
             <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
-              {signupStep === 'otp' ? 'Verify Email' : 'DevForge'}
+              {signupStep === 'otp' ? 'Verify Email' : 'Welcome'}
             </h1>
             <p className="text-sm text-zinc-500 mt-1">
               {signupStep === 'otp'

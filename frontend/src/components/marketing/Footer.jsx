@@ -24,7 +24,7 @@ export default function Footer() {
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <Terminal className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+              <img src="/logo.png" alt="DevForge Logo" className="h-10 w-auto drop-shadow-sm" />
               <span className="font-semibold text-zinc-900 dark:text-zinc-100">DevForge</span>
             </div>
             <p className="max-w-sm text-sm text-zinc-500 dark:text-zinc-500 leading-relaxed">

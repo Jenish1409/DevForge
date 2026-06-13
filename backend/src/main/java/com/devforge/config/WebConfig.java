@@ -14,6 +14,9 @@ public class WebConfig implements WebMvcConfigurer {
     private final MockSecurityInterceptor mockSecurityInterceptor;
     private final MockTrafficInterceptor mockTrafficInterceptor;
 
+    @org.springframework.beans.factory.annotation.Value("${app.cors.allowed-origins}")
+    private String allowedOrigins;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(mockSecurityInterceptor)
@@ -23,5 +26,21 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(mockTrafficInterceptor)
                 .addPathPatterns("/mock/**")
                 .order(2);
+    }
+
+    @Override
+    public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
+        // Secure internal dashboard APIs
+        registry.addMapping("/api/v1/**")
+                .allowedOrigins(allowedOrigins.split(","))
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+
+        // Keep mock APIs open for developers to hit from their own frontends
+        registry.addMapping("/mock/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .allowedHeaders("*");
     }
 }

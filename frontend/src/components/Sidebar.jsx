@@ -13,7 +13,7 @@ export default function Sidebar({ projects, selectedId, onSelect, onNewProject, 
   }
 
   return (
-    <aside className="w-64 shrink-0 flex flex-col border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 transition-colors">
+    <aside className="w-full md:w-64 shrink-0 flex flex-col max-h-[35vh] md:max-h-full md:h-full border-b md:border-b-0 md:border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 transition-colors">
       <div className="px-4 py-5 border-b border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2.5 min-w-0">

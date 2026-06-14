@@ -202,12 +202,12 @@ export default function HomePage() {
           
           {/* Left Column: Bold Copy */}
           <div className="lg:col-span-6 space-y-6 text-left animate-fade-in">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-4 py-1.5 text-xs font-mono text-emerald-700 dark:text-emerald-400 shadow-sm shadow-emerald-500/5">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-4 py-1.5 text-xs font-mono text-emerald-700 dark:text-emerald-400 shadow-sm shadow-emerald-500/5 animate-float">
               <Sparkles className="h-3.5 w-3.5 animate-pulse text-emerald-500" />
               <span>Stop waiting for the backend to be finished</span>
             </div>
 
-            <h1 className="text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-5xl lg:text-6xl leading-tight">
+            <h1 className="text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-5xl lg:text-6xl leading-tight animate-fade-in">
               Forge Mock APIs.
               <br />
               <span className="bg-gradient-to-r from-emerald-600 dark:from-emerald-400 via-cyan-600 dark:via-cyan-400 to-emerald-600 dark:to-emerald-400 bg-clip-text text-transparent">
@@ -215,17 +215,17 @@ export default function HomePage() {
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-xl">
+            <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-xl animate-fade-in-delay-1">
               DevForge lets frontend teams spin up mock server endpoints instantly. Skip compiling custom backends, managing database migrations, or waiting on API specs. Just define, delay, and code.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row gap-4 pt-2 animate-fade-in-delay-2">
               <Link
                 to="/login"
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/35 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:ring-offset-2 hover:bg-emerald-500 transition-all duration-300 transform active:scale-95"
               >
                 Create Sandbox Account
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <a
                 href="#features"
@@ -245,8 +245,8 @@ export default function HomePage() {
           </div>
 
           {/* Right Column: Live Mock Simulator */}
-          <div className="lg:col-span-6 w-full animate-fade-in [animation-delay:150ms]">
-            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/70 p-1 shadow-2xl shadow-zinc-400/20 dark:shadow-black/60 transition-all backdrop-blur-sm">
+          <div className="lg:col-span-6 w-full">
+            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/60 p-1 shadow-2xl shadow-zinc-400/20 dark:shadow-black/60 transition-all backdrop-blur-xl animate-fade-in-delay-1 glass-effect hover:-translate-y-1 hover:shadow-emerald-500/10 duration-500">
               
               {/* Simulator Header */}
               <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-4 py-3 bg-zinc-50/50 dark:bg-zinc-900/40 rounded-t-2xl">
@@ -350,7 +350,7 @@ export default function HomePage() {
                   </div>
                   <div className="space-y-2 h-64 overflow-y-auto pr-1">
                     <p className="text-zinc-400 break-all whitespace-pre-wrap">
-                      $ curl -i -X {selectedEndpoint.method} http://localhost:8080/mock/devforge{selectedEndpoint.path}
+                      $ curl -i -X {selectedEndpoint.method} https://devforge-b374.onrender.com/mock/sandbox{selectedEndpoint.path}
                     </p>
                     {simulatorLoading && (
                       <p className="text-cyan-400 animate-pulse">

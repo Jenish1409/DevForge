@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { Terminal, ArrowRight } from 'lucide-react'
+import { Terminal, ArrowRight, Menu, X } from 'lucide-react'
 import ThemeToggle from '../ThemeToggle'
 
 const navLinkClass = ({ isActive }) =>
@@ -10,6 +11,7 @@ const navLinkClass = ({ isActive }) =>
   }`
 
 export default function Navbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { pathname } = useLocation()
 
   const featuresHref = pathname === '/' ? '#features' : '/#features'
@@ -43,13 +45,38 @@ export default function Navbar() {
           <ThemeToggle />
           <Link
             to="/login"
-            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500 transition-colors"
+            className="hidden sm:inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500 transition-colors"
           >
             Start Mocking
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
       </div>
+
+      {mobileMenuOpen && (
+        <div className="md:hidden border-b border-zinc-200 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900/95 px-4 py-4 space-y-4 shadow-lg backdrop-blur-md">
+          <NavLink to="/" end className="block text-sm font-medium text-zinc-600 dark:text-zinc-300" onClick={() => setMobileMenuOpen(false)}>Home</NavLink>
+          <a href={featuresHref} className="block text-sm font-medium text-zinc-600 dark:text-zinc-300" onClick={() => setMobileMenuOpen(false)}>Features</a>
+          <NavLink to="/about" className="block text-sm font-medium text-zinc-600 dark:text-zinc-300" onClick={() => setMobileMenuOpen(false)}>About</NavLink>
+          <NavLink to="/contact" className="block text-sm font-medium text-zinc-600 dark:text-zinc-300" onClick={() => setMobileMenuOpen(false)}>Contact</NavLink>
+          <div className="pt-2">
+            <Link
+              to="/login"
+              className="inline-flex w-full justify-center items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500 transition-colors"
+            >
+              Start Mocking
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </div>
+      )}
     </header>
   )
 }

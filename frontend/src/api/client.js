@@ -49,9 +49,10 @@ export async function apiFetch(path, options = {}) {
 }
 
 export function getMockBaseUrl(projectId) {
-  if (API_URL.startsWith('/')) {
-    return `http://localhost:8080/mock/${projectId}`
+  let base = API_URL
+  if (base.startsWith('/')) {
+    base = window.location.origin + base
   }
-  const base = API_URL.replace(/\/api\/v1\/?$/, '')
+  base = base.replace(/\/api\/v1\/?$/, '')
   return `${base}/mock/${projectId}`
 }

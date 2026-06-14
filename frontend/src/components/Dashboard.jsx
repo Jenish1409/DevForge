@@ -63,7 +63,7 @@ export default function Dashboard() {
   const activeProject = projects.find((p) => p.id === selectedId) ?? null
 
   return (
-    <div className="flex h-screen overflow-hidden bg-zinc-100 dark:bg-zinc-950 transition-colors animate-fade-in">
+    <div className="flex flex-col md:flex-row h-screen overflow-hidden bg-zinc-100 dark:bg-zinc-950 transition-colors animate-fade-in">
       <Sidebar
         projects={projects}
         selectedId={selectedId}

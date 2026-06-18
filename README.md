@@ -21,8 +21,7 @@
   <a href="#-project-structure">Project Structure</a> •
   <a href="#-deployment">Deployment</a> •
   <a href="#-demo">Demo</a> •
-  <a href="#-contributing">Contributing</a> •
-  <a href="#-license">License</a>
+  <a href="#-contributing">Contributing</a>
 </p>
 
 ---
@@ -224,36 +223,36 @@ cd DevForge
 cd backend
 ```
 
-Create a `.env` file:
+The backend uses `application.yaml` (located at `src/main/resources/application.yaml`) which reads configuration from environment variables. Set the following environment variables before running:
 
-```env
-# Database
-DB_URL=jdbc:postgresql://localhost:5432/devforge
-DB_USERNAME=postgres
-DB_PASSWORD=your_password
+| Variable | Description | Required |
+|---|---|---|
+| `DB_URL` | PostgreSQL JDBC URL (e.g. `jdbc:postgresql://localhost:5432/devforge`) | ✅ |
+| `DB_USERNAME` | Database username | ✅ |
+| `DB_PASSWORD` | Database password | ✅ |
+| `JWT_SECRET` | Secret key for signing JWT tokens | ✅ |
+| `BREVO_API_KEY` | Brevo transactional email API key | ✅ |
+| `BREVO_SENDER_EMAIL` | Sender email for OTP emails | ✅ |
+| `ADMIN_EMAIL` | Admin notification email | ✅ |
+| `JPA_DDL_AUTO` | Hibernate DDL mode (default: `update`) | |
+| `JPA_SHOW_SQL` | Log SQL queries (default: `false`) | |
+| `SERVER_PORT` | Server port (default: `8080`) | |
+| `REDIS_HOST` | Redis host (default: `localhost`) | |
+| `REDIS_PORT` | Redis port (default: `6379`) | |
+| `REDIS_PASSWORD` | Redis password (default: empty) | |
+| `REDIS_SSL` | Enable Redis SSL (default: `false`) | |
+| `ALLOWED_ORIGINS` | CORS allowed origins (default: `http://localhost:5173`) | |
 
-# JPA
-JPA_DDL_AUTO=update
-JPA_SHOW_SQL=false
+You can export them in your shell or use your IDE's run configuration:
 
-# JWT
-JWT_SECRET=your-256-bit-secret-key-here
-
-# Redis (optional)
-REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_PASSWORD=
-REDIS_SSL=false
-
-# Email (Brevo)
-BREVO_API_KEY=your-brevo-api-key
-BREVO_SENDER_EMAIL=noreply@yourdomain.com
-
-# Admin
-ADMIN_EMAIL=admin@yourdomain.com
-
-# CORS
-ALLOWED_ORIGINS=http://localhost:5173
+```bash
+export DB_URL=jdbc:postgresql://localhost:5432/devforge
+export DB_USERNAME=postgres
+export DB_PASSWORD=your_password
+export JWT_SECRET=your-256-bit-secret-key-here
+export BREVO_API_KEY=your-brevo-api-key
+export BREVO_SENDER_EMAIL=noreply@yourdomain.com
+export ADMIN_EMAIL=admin@yourdomain.com
 ```
 
 Run the backend:
@@ -424,12 +423,6 @@ Contributions are welcome! Here's how to get started:
 5. **Open** a Pull Request
 
 Please make sure your code follows the existing patterns and conventions in the project.
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
 
 ---
 

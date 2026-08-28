@@ -39,3 +39,7 @@ app:
   admin-email: ${ADMIN_EMAIL}
   cors:
     allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5173}
+
+apisentinel:
+  encryption:
+    secret-key: ${SENTINEL_ENCRYPTION_KEY:default-16-byte-key!}

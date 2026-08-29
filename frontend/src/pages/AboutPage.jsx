@@ -1,3 +1,5 @@
+import DynamicBackground from '../components/marketing/DynamicBackground'
+
 import { Terminal, Code2, Cpu, Database, Globe, Check, X as XIcon } from 'lucide-react'
 
 function GithubIcon({ className }) {
@@ -39,7 +41,9 @@ const TECH_STACK = [
 
 export default function AboutPage() {
   return (
-    <section className="relative mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-28 animate-fade-in">
+    <div className="relative overflow-hidden bg-zinc-50 dark:bg-zinc-950 transition-colors duration-700 min-h-screen">
+      <DynamicBackground />
+      <section className="relative z-10 mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-28 animate-fade-in">
       {/* Header */}
       <div className="text-center mb-16">
         <div className="mb-5 inline-flex items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 p-3 shadow-sm">
@@ -49,7 +53,7 @@ export default function AboutPage() {
           About DevForge
         </h1>
         <p className="mt-3 text-zinc-500 dark:text-zinc-400 text-sm max-w-md mx-auto">
-          API Mocking and Live Monitoring â€” one platform.
+          API Mocking and Live Monitoring &mdash; one platform.
         </p>
       </div>
 
@@ -140,5 +144,6 @@ export default function AboutPage() {
         </div>
       </div>
     </section>
+    </div>
   )
 }

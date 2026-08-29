@@ -287,8 +287,7 @@ export default function LoginView() {
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Signing inÃ¢â‚¬Â¦
-                  </>
+                    Signing in&hellip;</>
                 ) : (
                   'Sign In'
                 )}
@@ -376,8 +375,7 @@ export default function LoginView() {
                     {loading ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Sending verification codeÃ¢â‚¬Â¦
-                      </>
+                        Sending verification code&hellip;</>
                     ) : (
                       'Send Verification Code'
                     )}
@@ -425,8 +423,7 @@ export default function LoginView() {
                     {loading ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        VerifyingÃ¢â‚¬Â¦
-                      </>
+                        Verifying&hellip;</>
                     ) : (
                       'Verify & Create Account'
                     )}

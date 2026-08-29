@@ -16,7 +16,7 @@ export default function Navbar() {
   const featuresHref = pathname === '/' ? '#features' : '/#features'
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-200/60 dark:border-zinc-800/50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl transition-colors">
+    <header className="sticky top-0 z-50 border-b border-zinc-200/20 dark:border-zinc-800/20 bg-white/10 dark:bg-zinc-950/20 backdrop-blur-sm transition-colors">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
           <img src="/logo.png" alt="DevForge" className="h-9 w-auto group-hover:scale-105 transition-transform duration-300" />
@@ -52,7 +52,7 @@ export default function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-zinc-200/60 dark:border-zinc-800/50 bg-white/95 dark:bg-zinc-950/95 px-4 py-4 space-y-3 backdrop-blur-xl">
+        <div className="md:hidden border-t border-zinc-200/20 dark:border-zinc-800/20 bg-white/95 dark:bg-zinc-950/95 px-4 py-4 space-y-3 backdrop-blur-xl">
           <NavLink to="/" end className="block text-sm font-medium text-zinc-600 dark:text-zinc-300" onClick={() => setMobileMenuOpen(false)}>Home</NavLink>
           <a href={featuresHref} className="block text-sm font-medium text-zinc-600 dark:text-zinc-300" onClick={() => setMobileMenuOpen(false)}>Features</a>
           <NavLink to="/about" className="block text-sm font-medium text-zinc-600 dark:text-zinc-300" onClick={() => setMobileMenuOpen(false)}>About</NavLink>

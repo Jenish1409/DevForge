@@ -1,6 +1,11 @@
+import DynamicBackground from '../components/marketing/DynamicBackground'
+
 import { useState } from 'react'
+
 import { Mail, Send, MessageSquare, Loader2, CheckCircle } from 'lucide-react'
+
 import { submitContact } from '../api/auth'
+
 import { useToast } from '../context/ToastContext'
 
 export default function ContactPage() {
@@ -36,7 +41,9 @@ export default function ContactPage() {
     'w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 px-4 py-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 transition-colors'
 
   return (
-    <section className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+    <div className="relative overflow-hidden bg-zinc-50 dark:bg-zinc-950 transition-colors duration-700 min-h-screen">
+      <DynamicBackground />
+      <section className="relative z-10 mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
       <div className="mx-auto max-w-xl">
         <div className="text-center mb-10">
           <div className="mb-4 inline-flex items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 p-3">
@@ -132,7 +139,7 @@ export default function ContactPage() {
               {loading ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Sending…
+                  Sending&hellip;
                 </>
               ) : (
                 <>
@@ -145,5 +152,6 @@ export default function ContactPage() {
         )}
       </div>
     </section>
+    </div>
   )
 }

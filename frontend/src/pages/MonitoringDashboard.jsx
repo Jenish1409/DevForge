@@ -157,7 +157,7 @@ export default function MonitoringDashboard() {
                 {item.rateLimitUntil && new Date(item.rateLimitUntil) > new Date() && (
                   <div className="mb-2 flex items-start gap-1.5 text-[10px] font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 p-1.5 rounded-md border border-amber-200 dark:border-amber-800">
                     <AlertCircle className="w-3 h-3 shrink-0 mt-0.5" />
-                    <span>Rate limited â€” paused 5 min</span>
+                    <span>Rate limited &mdash; paused 5 min</span>
                   </div>
                 )}
 
@@ -174,7 +174,7 @@ export default function MonitoringDashboard() {
                       : item.uptimePercentage != null && item.uptimePercentage < 99 ? 'text-amber-600 dark:text-amber-400'
                       : 'text-zinc-900 dark:text-white'
                     }`}>
-                      {item.uptimePercentage != null ? item.uptimePercentage.toFixed(2) : 'â€”'}%
+                      {item.uptimePercentage != null ? item.uptimePercentage.toFixed(2) : '&mdash;'}%
                     </p>
                   </div>
                   <div>

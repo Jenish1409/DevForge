@@ -1,4 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
+import ScrollToTop from './components/ScrollToTop'
+
 import PublicLayout from './layouts/PublicLayout'
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
@@ -12,7 +14,9 @@ import GuestRoute from './components/GuestRoute'
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       <Route element={<PublicLayout />}>
         <Route index element={<HomePage />} />
         <Route path="about" element={<AboutPage />} />
@@ -43,5 +47,6 @@ export default function App() {
         <Route path="monitoring/:id" element={<MonitoringApiDetails />} />
       </Route>
     </Routes>
+    </>
   )
 }

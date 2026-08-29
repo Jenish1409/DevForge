@@ -18,7 +18,7 @@ function LinkedinIcon({ className }) {
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-950 transition-colors">
+    <footer className="border-t border-zinc-200/20 dark:border-zinc-800/20 bg-white/5 dark:bg-zinc-950/20 backdrop-blur-sm transition-colors">
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">

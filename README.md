@@ -21,7 +21,7 @@
   <a href="#-project-structure">Project Structure</a> •
   <a href="#-deployment">Deployment</a> •
   <a href="#-demo">Demo</a> •
-  <a href="#%E2%9A%A0%EF%B8%8F-license--intellectual-property">License & Rights</a>
+  <a href="#%EF%B8%8F-license--intellectual-property">License & Rights</a>
 </p>
 
 ---

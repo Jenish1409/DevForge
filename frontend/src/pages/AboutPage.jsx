@@ -32,7 +32,7 @@ const FLOW_POINTS = [
 
 const TECH_STACK = [
   { icon: Code2, name: 'React + Vite + Tailwind', tag: 'Responsive UI' },
-  { icon: Cpu, name: 'Java 25 + Spring Boot 3', tag: 'Async Engine' },
+  { icon: Cpu, name: 'Java 25 + Spring Boot 4', tag: 'Async Engine' },
   { icon: Database, name: 'PostgreSQL + Redis', tag: 'Sub-ms Cache' },
   { icon: Globe, name: 'Brevo SMTP', tag: 'Transactional Email' },
 ]
@@ -49,7 +49,7 @@ export default function AboutPage() {
           About DevForge
         </h1>
         <p className="mt-3 text-zinc-500 dark:text-zinc-400 text-sm max-w-md mx-auto">
-          API Mocking and Live Monitoring — one platform.
+          API Mocking and Live Monitoring â€” one platform.
         </p>
       </div>
 

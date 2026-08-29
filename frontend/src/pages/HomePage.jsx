@@ -10,6 +10,69 @@ import {
 } from 'lucide-react'
 
 /* ─────────────────────────────────────────────
+   Hero Visual — Floating Terminal Window
+   ───────────────────────────────────────────── */
+
+function HeroTerminal() {
+  return (
+    <div className="relative w-full animate-fade-in">
+      {/* Glow backdrop */}
+      <div className="absolute -inset-4 bg-gradient-to-br from-emerald-500/10 via-transparent to-cyan-500/10 rounded-3xl blur-2xl pointer-events-none" />
+
+      <div className="relative rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/70 shadow-2xl shadow-zinc-400/20 dark:shadow-black/40 overflow-hidden backdrop-blur-xl">
+        {/* Window chrome */}
+        <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-4 py-2.5 bg-zinc-50/80 dark:bg-zinc-900/60">
+          <div className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded-full bg-red-400/80" />
+            <span className="h-3 w-3 rounded-full bg-amber-400/80" />
+            <span className="h-3 w-3 rounded-full bg-emerald-400/80" />
+          </div>
+          <span className="font-mono text-[10px] text-zinc-400">devforge-cli</span>
+          <span className="w-12" />
+        </div>
+
+        {/* Terminal body */}
+        <div className="p-5 font-mono text-xs leading-relaxed bg-zinc-950 text-zinc-300 space-y-3">
+          {/* Command 1: Create mock */}
+          <div>
+            <p className="text-zinc-500">
+              <span className="text-emerald-400">$</span> devforge mock create --route /api/users --method GET
+            </p>
+            <p className="text-emerald-400 mt-1">&#10003; Mock route created &#8594; 200 OK</p>
+          </div>
+
+          {/* Command 2: Set latency */}
+          <div>
+            <p className="text-zinc-500">
+              <span className="text-emerald-400">$</span> devforge mock delay --ms 2000
+            </p>
+            <p className="text-cyan-400 mt-1">&#10003; Latency injected &#8594; 2000ms</p>
+          </div>
+
+          {/* Command 3: Monitor */}
+          <div>
+            <p className="text-zinc-500">
+              <span className="text-emerald-400">$</span> devforge sentinel watch --url api.myapp.com/health
+            </p>
+            <div className="mt-1 space-y-0.5">
+              <p className="text-zinc-400">&#9500;&#9472; Status: <span className="text-emerald-400">200 &#10003;</span></p>
+              <p className="text-zinc-400">&#9500;&#9472; Latency: <span className="text-cyan-400">142ms</span></p>
+              <p className="text-zinc-400">&#9492;&#9472; Uptime: <span className="text-emerald-400">99.97%</span></p>
+            </div>
+          </div>
+
+          {/* Cursor */}
+          <p className="text-zinc-500">
+            <span className="text-emerald-400">$</span>
+            <span className="inline-block w-2 h-4 bg-emerald-400 ml-1 animate-pulse align-middle" />
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────
    Bento Grid Sub-Components
    ───────────────────────────────────────────── */
 
@@ -182,39 +245,57 @@ export default function HomePage() {
   return (
     <div className="space-y-24 pb-8">
 
-      {/* ── Hero ── */}
-      <section className="relative mx-auto max-w-4xl px-4 pt-20 sm:pt-28 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-xs font-mono text-emerald-700 dark:text-emerald-400 mb-8 animate-fade-in">
-          <Sparkles className="h-3.5 w-3.5 text-emerald-500 animate-pulse" />
-          <span>Mock & Monitor Platform</span>
-        </div>
+      {/* ── Hero — Asymmetric Split ── */}
+      <section className="relative mx-auto max-w-7xl px-4 pt-16 sm:pt-20 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] text-zinc-950 dark:text-zinc-50 mb-6 animate-fade-in">
-          Mock in seconds.
-          <br />
-          <span className="bg-gradient-to-r from-emerald-600 via-cyan-600 to-emerald-600 dark:from-emerald-400 dark:via-cyan-400 dark:to-emerald-400 bg-clip-text text-transparent">
-            Monitor forever.
-          </span>
-        </h1>
+          {/* Left: Copy */}
+          <div className="lg:col-span-5 space-y-6 text-left animate-fade-in">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-xs font-mono text-emerald-700 dark:text-emerald-400">
+              <Sparkles className="h-3.5 w-3.5 text-emerald-500 animate-pulse" />
+              <span>Mock & Monitor Platform</span>
+            </div>
 
-        <p className="text-base sm:text-lg text-zinc-500 dark:text-zinc-400 max-w-lg mx-auto mb-10 animate-fade-in">
-          Zero backend setup. Instant alerts. Stop waiting and start shipping.
-        </p>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-zinc-950 dark:text-zinc-50">
+              Mock in seconds.
+              <br />
+              <span className="bg-gradient-to-r from-emerald-600 via-cyan-600 to-emerald-600 dark:from-emerald-400 dark:via-cyan-400 dark:to-emerald-400 bg-clip-text text-transparent">
+                Monitor forever.
+              </span>
+            </h1>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500 hover:shadow-emerald-500/35 hover:-translate-y-0.5 transition-all duration-300 active:scale-95"
-          >
-            Get Started for Free
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-          <a
-            href="#features"
-            className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/40 px-7 py-3.5 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:-translate-y-0.5 transition-all duration-300 active:scale-95"
-          >
-            View Features
-          </a>
+            <p className="text-base sm:text-lg text-zinc-500 dark:text-zinc-400 max-w-md leading-relaxed">
+              Zero backend setup. Instant alerts. Stop waiting and start shipping.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500 hover:shadow-emerald-500/35 hover:-translate-y-0.5 transition-all duration-300 active:scale-95"
+              >
+                Get Started for Free
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a
+                href="#features"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/40 px-6 py-3.5 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:-translate-y-0.5 transition-all duration-300 active:scale-95"
+              >
+                View Features
+              </a>
+            </div>
+
+            <div className="flex items-center gap-3 pt-3 border-t border-zinc-200/50 dark:border-zinc-800/50 max-w-xs">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-mono text-xs text-zinc-400 dark:text-zinc-500">
+                Deployed on Render + Vercel
+              </span>
+            </div>
+          </div>
+
+          {/* Right: Terminal Visual */}
+          <div className="lg:col-span-7 w-full">
+            <HeroTerminal />
+          </div>
         </div>
       </section>
 

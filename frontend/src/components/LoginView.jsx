@@ -204,7 +204,7 @@ export default function LoginView() {
             <p className="text-sm text-zinc-500 mt-1">
               {signupStep === 'otp'
                 ? `Enter the 6-digit code sent to ${email}`
-                : 'API Mocking Platform'}
+                : 'API Mocking & Monitoring Platform'}
             </p>
           </div>
 
@@ -287,7 +287,7 @@ export default function LoginView() {
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Signing in…
+                    Signing inÃ¢â‚¬Â¦
                   </>
                 ) : (
                   'Sign In'
@@ -376,7 +376,7 @@ export default function LoginView() {
                     {loading ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Sending verification code…
+                        Sending verification codeÃ¢â‚¬Â¦
                       </>
                     ) : (
                       'Send Verification Code'
@@ -425,7 +425,7 @@ export default function LoginView() {
                     {loading ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Verifying…
+                        VerifyingÃ¢â‚¬Â¦
                       </>
                     ) : (
                       'Verify & Create Account'
@@ -450,9 +450,7 @@ export default function LoginView() {
           )}
         </div>
 
-        <p className="text-center text-xs text-zinc-500 dark:text-zinc-600 mt-6">
-          DevForge — Built by Jenish Raichura
-        </p>
+        <p className="text-center text-xs text-zinc-500 dark:text-zinc-600 mt-6">DevForge &mdash; Built by Jenish Raichura</p>
       </div>
     </div>
   )

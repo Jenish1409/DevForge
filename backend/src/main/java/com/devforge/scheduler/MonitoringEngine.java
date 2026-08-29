@@ -1,4 +1,4 @@
-﻿package com.devforge.scheduler;
+package com.devforge.scheduler;
 
 import com.devforge.entity.ApiCheckHistory;
 import com.devforge.entity.ApiIncident;

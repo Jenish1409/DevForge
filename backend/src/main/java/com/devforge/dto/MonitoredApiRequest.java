@@ -1,4 +1,4 @@
-﻿package com.devforge.dto;
+package com.devforge.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

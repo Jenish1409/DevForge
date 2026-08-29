@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { Terminal } from 'lucide-react'
 
 function GithubIcon({ className }) {
   return (
@@ -19,97 +18,35 @@ function LinkedinIcon({ className }) {
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 transition-colors">
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <img src="/logo.png" alt="DevForge Logo" className="h-10 w-auto drop-shadow-sm" />
-              <span className="font-semibold text-zinc-900 dark:text-zinc-100">DevForge</span>
-            </div>
-            <p className="max-w-sm text-sm text-zinc-500 dark:text-zinc-500 leading-relaxed">
-              A full-stack API mocking platform built by{' '}
-              <span className="text-zinc-700 dark:text-zinc-300 font-medium">Jenish Raichura</span>.
-              Prototype faster, ship sooner.
-            </p>
-            <div className="flex items-center gap-3 mt-4">
-              <a
-                href="https://github.com/Jenish1409/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-zinc-400 dark:text-zinc-600 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
-                aria-label="GitHub"
-              >
-                <GithubIcon className="w-5 h-5" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/jenish-raichura-9b535727b/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-zinc-400 dark:text-zinc-600 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
-                aria-label="LinkedIn"
-              >
-                <LinkedinIcon className="w-5 h-5" />
-              </a>
-            </div>
+    <footer className="border-t border-zinc-200 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-950 transition-colors">
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2.5">
+            <img src="/logo.png" alt="DevForge" className="h-8 w-auto" />
+            <span className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">DevForge</span>
+            <span className="text-zinc-300 dark:text-zinc-700 mx-1">|</span>
+            <span className="text-xs text-zinc-500">Mock & Monitor Platform</span>
           </div>
 
-          <div className="flex gap-12">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-3">Navigate</p>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link to="/" className="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <a href="/#features" className="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-                    Features
-                  </a>
-                </li>
-                <li>
-                  <Link to="/about" className="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/contact" className="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-                    Contact
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/login" className="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-                    Login
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <p className="text-xs font-medium uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-3">Connect</p>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a href="https://github.com/Jenish1409/" target="_blank" rel="noopener noreferrer" className="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a href="https://www.linkedin.com/in/jenish-raichura-9b535727b/" target="_blank" rel="noopener noreferrer" className="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-                    LinkedIn
-                  </a>
-                </li>
-              </ul>
-            </div>
+          <nav className="flex items-center gap-6 text-sm">
+            <Link to="/" className="text-zinc-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Home</Link>
+            <Link to="/about" className="text-zinc-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">About</Link>
+            <Link to="/contact" className="text-zinc-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Contact</Link>
+          </nav>
+
+          <div className="flex items-center gap-4">
+            <a href="https://github.com/Jenish1409/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 dark:text-zinc-600 hover:text-zinc-700 dark:hover:text-zinc-300 transition-all duration-200 hover:scale-110" aria-label="GitHub">
+              <GithubIcon className="w-5 h-5" />
+            </a>
+            <a href="https://www.linkedin.com/in/jenish-raichura-9b535727b/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 dark:text-zinc-600 hover:text-zinc-700 dark:hover:text-zinc-300 transition-all duration-200 hover:scale-110" aria-label="LinkedIn">
+              <LinkedinIcon className="w-5 h-5" />
+            </a>
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-zinc-200 dark:border-zinc-800 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-zinc-500">
-            Built by Jenish Raichura
-          </p>
-          <p className="text-xs text-zinc-400 dark:text-zinc-600 font-mono">
-            © {new Date().getFullYear()} DevForge · mock responsibly
-          </p>
+        <div className="mt-6 pt-6 border-t border-zinc-200/50 dark:border-zinc-800/30 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p className="text-xs text-zinc-400 dark:text-zinc-600">Built by Jenish Raichura</p>
+          <p className="text-xs text-zinc-400 dark:text-zinc-600 font-mono">&copy; {new Date().getFullYear()} DevForge</p>
         </div>
       </div>
     </footer>

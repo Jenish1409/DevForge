@@ -139,4 +139,65 @@ public class EmailService {
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;");
     }
+    /**
+     * Sends an email alert when a monitored API is detected as DOWN after 3 consecutive failures.
+     */
+    public void sendApiDownAlert(String toEmail, String apiName, int statusCode, String reason) {
+        String subject = "DevForge ALERT: " + escapeHtml(apiName) + " is DOWN";
+        String htmlContent = """
+                <html>
+                <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #09090b; color: #fafafa; padding: 40px 20px;">
+                  <div style="max-width: 500px; margin: 0 auto;">
+                    <div style="background: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 32px;">
+                      <h1 style="font-size: 20px; font-weight: 600; margin: 0 0 8px; color: #fafafa;">DevForge</h1>
+                      <p style="font-size: 13px; color: #71717a; margin: 0 0 24px;">API Monitoring Alert</p>
+                      <div style="background: #1c1917; border: 1px solid #dc2626; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                        <p style="font-size: 14px; color: #ef4444; font-weight: 600; margin: 0 0 8px;">⚠ Service Down Detected</p>
+                        <p style="font-size: 13px; color: #a1a1aa; margin: 0;">%s has failed 3 consecutive checks.</p>
+                      </div>
+                      <table style="width: 100%%; border-collapse: collapse; margin-bottom: 16px;">
+                        <tr><td style="padding: 6px 0; color: #71717a; font-size: 13px;">Status Code</td><td style="padding: 6px 0; color: #fafafa; font-size: 13px; text-align: right;">%d</td></tr>
+                        <tr><td style="padding: 6px 0; color: #71717a; font-size: 13px;">Reason</td><td style="padding: 6px 0; color: #fafafa; font-size: 13px; text-align: right;">%s</td></tr>
+                      </table>
+                      <p style="font-size: 12px; color: #52525b; margin: 0;">Check your DevForge dashboard for details.</p>
+                    </div>
+                  </div>
+                </body>
+                </html>
+                """.formatted(escapeHtml(apiName), statusCode, escapeHtml(reason));
+        try {
+            sendEmail(toEmail, subject, htmlContent);
+        } catch (Exception e) {
+            log.error("Failed to send DOWN alert email to {}: {}", toEmail, e.getMessage());
+        }
+    }
+
+    /**
+     * Sends an email notification when a monitored API recovers from DOWN to UP.
+     */
+    public void sendApiRecoveryAlert(String toEmail, String apiName) {
+        String subject = "DevForge RECOVERY: " + escapeHtml(apiName) + " is UP";
+        String htmlContent = """
+                <html>
+                <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #09090b; color: #fafafa; padding: 40px 20px;">
+                  <div style="max-width: 500px; margin: 0 auto;">
+                    <div style="background: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 32px;">
+                      <h1 style="font-size: 20px; font-weight: 600; margin: 0 0 8px; color: #fafafa;">DevForge</h1>
+                      <p style="font-size: 13px; color: #71717a; margin: 0 0 24px;">API Monitoring Alert</p>
+                      <div style="background: #052e16; border: 1px solid #22c55e; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                        <p style="font-size: 14px; color: #34d399; font-weight: 600; margin: 0 0 8px;">✓ Service Recovered</p>
+                        <p style="font-size: 13px; color: #a1a1aa; margin: 0;">%s is back online and responding normally.</p>
+                      </div>
+                      <p style="font-size: 12px; color: #52525b; margin: 0;">Monitoring continues as normal.</p>
+                    </div>
+                  </div>
+                </body>
+                </html>
+                """.formatted(escapeHtml(apiName));
+        try {
+            sendEmail(toEmail, subject, htmlContent);
+        } catch (Exception e) {
+            log.error("Failed to send RECOVERY alert email to {}: {}", toEmail, e.getMessage());
+        }
+    }
 }

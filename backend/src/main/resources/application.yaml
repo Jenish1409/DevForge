@@ -1,4 +1,4 @@
-spring:
+﻿spring:
   application:
     name: devforge
 
@@ -25,9 +25,9 @@ jwt:
   expiration: ${JWT_EXPIRATION:86400000}
 
 spring.data.redis:
-  host: ${REDIS_HOST:localhost}
+  host: ${REDIS_HOST}
   port: ${REDIS_PORT:6379}
-  password: ${REDIS_PASSWORD:}
+  password: ${REDIS_PASSWORD}
   ssl:
     enabled: ${REDIS_SSL:false}
 
@@ -39,3 +39,9 @@ app:
   admin-email: ${ADMIN_EMAIL}
   cors:
     allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5173}
+
+apisentinel:
+  encryption:
+    secret-key: ${SENTINEL_ENCRYPTION_KEY:default-16-byte-key!}
+
+

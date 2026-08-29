@@ -1,4 +1,4 @@
-package com.devforge.dto;
+﻿package com.devforge.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +28,6 @@ public class MonitoredApiResponse {
     private LocalDateTime rateLimitUntil;
     private Long incidentCount;
     private List<String> recentStatuses;
+    private String authHeaderName;
 }
+

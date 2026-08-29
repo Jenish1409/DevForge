@@ -1,4 +1,4 @@
-package com.devforge.service;
+﻿package com.devforge.service;
 
 import com.devforge.dto.*;
 import com.devforge.entity.*;
@@ -36,6 +36,7 @@ public class ApiMonitoringService {
                 .enabled(true)
                 .lastCheckedAt(LocalDateTime.now().minusDays(1))
                 .user(user)
+                .authHeaderName(request.getAuthHeaderName() != null && !request.getAuthHeaderName().trim().isEmpty() ? request.getAuthHeaderName().trim() : "Authorization")
                 .build();
 
         if (request.getApiKey() != null && !request.getApiKey().trim().isEmpty()) {
@@ -149,6 +150,7 @@ public class ApiMonitoringService {
         api.setUrl(request.getUrl());
         api.setMethod(request.getMethod());
         api.setIntervalSeconds(request.getIntervalSeconds());
+        api.setAuthHeaderName(request.getAuthHeaderName() != null && !request.getAuthHeaderName().trim().isEmpty() ? request.getAuthHeaderName().trim() : "Authorization");
 
         if (request.getApiKey() != null && !request.getApiKey().trim().isEmpty()) {
             api.setApiKey(encryptionUtils.encrypt(request.getApiKey().trim()));
@@ -175,7 +177,7 @@ public class ApiMonitoringService {
         apiRepository.save(api);
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
+    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private void validateOwner(Long apiId, String username) {
         MonitoredApi api = apiRepository.findById(apiId)
@@ -224,6 +226,7 @@ public class ApiMonitoringService {
                 .rateLimitUntil(api.getRateLimitUntil())
                 .incidentCount(incidentCount)
                 .recentStatuses(recentStatuses)
+                .authHeaderName(api.getAuthHeaderName())
                 .build();
     }
 
@@ -239,3 +242,4 @@ public class ApiMonitoringService {
         };
     }
 }
+

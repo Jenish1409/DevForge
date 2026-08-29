@@ -1,4 +1,4 @@
-package com.devforge.dto;
+﻿package com.devforge.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -22,4 +22,7 @@ public class MonitoredApiRequest {
     private Integer intervalSeconds;
 
     private String apiKey;
+
+    private String authHeaderName;
 }
+

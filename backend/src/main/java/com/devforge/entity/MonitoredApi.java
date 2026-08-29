@@ -1,4 +1,4 @@
-package com.devforge.entity;
+﻿package com.devforge.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -69,8 +69,12 @@ public class MonitoredApi {
     @Column(name = "api_key")
     private String apiKey;
 
+    @Column(name = "auth_header_name")
+    private String authHeaderName;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 }
+

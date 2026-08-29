@@ -4,7 +4,9 @@ import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
 import LoginView from './components/LoginView'
-import Dashboard from './components/Dashboard'
+import DashboardLayout from './components/DashboardLayout'
+import MonitoringDashboard from './pages/MonitoringDashboard'
+import MonitoringApiDetails from './pages/MonitoringApiDetails'
 import ProtectedRoute from './components/ProtectedRoute'
 import GuestRoute from './components/GuestRoute'
 
@@ -26,14 +28,20 @@ export default function App() {
         }
       />
 
+      {/* Dashboard shell with dual-mode sidebar (Mock Engine / Live Sentinel) */}
       <Route
         path="dashboard"
         element={
           <ProtectedRoute>
-            <Dashboard />
+            <DashboardLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        {/* Mock Engine is rendered inline by DashboardLayout when path is /dashboard */}
+        {/* Live Sentinel routes use <Outlet /> */}
+        <Route path="monitoring" element={<MonitoringDashboard />} />
+        <Route path="monitoring/:id" element={<MonitoringApiDetails />} />
+      </Route>
     </Routes>
   )
 }

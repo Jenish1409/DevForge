@@ -20,7 +20,6 @@
   <a href="#-api-reference">API Reference</a> •
   <a href="#-project-structure">Project Structure</a> •
   <a href="#-deployment">Deployment</a> •
-  <a href="#-demo">Demo</a> •
   <a href="#%EF%B8%8F-license--intellectual-property">License & Rights</a>
 </p>
 
@@ -421,12 +420,6 @@ DevForge/
 
 - **Rate limiting is per-instance, not global.** The mock engine's rate limiter is in-memory, so if the backend is horizontally scaled to multiple instances, each instance enforces its own limit independently rather than sharing a global count. A production-scale fix would move this to a shared store (e.g. Redis-backed counters) — noted here as a known, deliberate trade-off for a single-instance deployment, not an oversight.
 - **The monitoring scheduler runs as a single in-process loop.** It doesn't yet shard checks across multiple worker instances, so it doesn't horizontally scale past what one instance's scheduler thread can handle — fine for a moderate number of monitored APIs, but a real production version would move this to a distributed job queue.
-
----
-
-## 🎬 Demo
-
-A demo video is included in the repository: [Demo Video of DevForge.mp4](Demo%20Video%20of%20DevForge.mp4)
 
 ---
 

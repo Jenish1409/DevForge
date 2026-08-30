@@ -20,6 +20,7 @@
   <a href="#-api-reference">API Reference</a> •
   <a href="#-project-structure">Project Structure</a> •
   <a href="#-deployment">Deployment</a> •
+  <a href="#-demo">Demo</a> •
   <a href="#%EF%B8%8F-license--intellectual-property">License & Rights</a>
 </p>
 
@@ -107,13 +108,13 @@ Together, the two halves cover both ends of the API lifecycle: mock what doesn't
 ### Backend
 | Technology | Purpose |
 |---|---|
-| **Java 25** | Language runtime |
-| **Spring Boot** | Web framework & dependency injection — *(verify exact version from `pom.xml` before publishing)* |
+| **Java** | `25` — Language runtime |
+| **Spring Boot** | `4.0.6` — Web framework & dependency injection |
 | **Spring Security** | Authentication & authorization |
 | **Spring Data JPA** | ORM & database access |
 | **PostgreSQL** | Primary relational database |
 | **Redis** | Response caching layer |
-| **JJWT 0.13** | JWT token generation & validation |
+| **JJWT** | `0.13.0` — JWT token generation & validation |
 | **Brevo API** | Transactional OTP emails |
 | **Lombok** | Boilerplate reduction |
 | **Docker** | Containerized deployment (multi-stage build) |
@@ -121,11 +122,12 @@ Together, the two halves cover both ends of the API lifecycle: mock what doesn't
 ### Frontend
 | Technology | Purpose |
 |---|---|
-| **React 19** | UI library |
-| **Vite 8** | Build tool & dev server |
-| **TailwindCSS 4** | Utility-first styling |
-| **React Router 7** | Client-side routing |
-| **Lucide React** | Icon library |
+| **React** | `^19.2.6` — UI library |
+| **Vite** | `^8.0.12` — Build tool & dev server |
+| **TailwindCSS** | `^4.3.0` — Utility-first styling |
+| **React Router** | `^7.17.0` — Client-side routing |
+| **Lucide React** | `^1.17.0` — Icon library |
+| **Recharts** | `^3.10.1` — Charting/analytics visualization |
 
 ### Infrastructure
 | Service | Purpose |
@@ -353,14 +355,21 @@ DevForge/
 │   │   │   ├── ProjectController     # CRUD for projects
 │   │   │   ├── EndpointManagement    # CRUD for mock endpoints
 │   │   │   ├── DynamicMockController # Wildcard mock request handler
+│   │   │   ├── MonitoringController  # Live Sentinel: register/list/toggle monitored APIs, history & incidents
 │   │   │   └── ContactController     # Contact form submissions
 │   │   ├── dto/                      # Request/Response DTOs
-│   │   ├── entity/                   # JPA entities (User, Project, MockEndpoint, MockRequestLog)
+│   │   ├── entity/                   # JPA entities
+│   │   │   │                         #   User, Project, MockEndpoint, MockRequestLog,
+│   │   │   │                         #   MonitoredApi, ApiCheckHistory, ApiIncident
 │   │   ├── exception/                # Global exception handler + custom exceptions
 │   │   ├── interceptor/              # Rate limiter & request logger interceptors
 │   │   ├── repository/               # Spring Data JPA repositories
+│   │   │   │                         #   incl. MonitoredApiRepository, ApiCheckHistoryRepository,
+│   │   │   │                         #   ApiIncidentRepository
+│   │   ├── scheduler/                # MonitoringEngine — background polling loop (Spring @Scheduled)
 │   │   ├── security/                 # JWT filter, SecurityConfig, ApplicationConfig
 │   │   ├── service/                  # Business logic layer
+│   │   │   │                         #   incl. ApiMonitoringService — polling, incident creation, alert dispatch
 │   │   └── util/                     # API key hashing utility
 │   ├── Dockerfile                    # Multi-stage Docker build
 │   └── pom.xml                       # Maven dependencies
@@ -414,6 +423,10 @@ DevForge/
 - **The monitoring scheduler runs as a single in-process loop.** It doesn't yet shard checks across multiple worker instances, so it doesn't horizontally scale past what one instance's scheduler thread can handle — fine for a moderate number of monitored APIs, but a real production version would move this to a distributed job queue.
 
 ---
+
+## 🎬 Demo
+
+A demo video is included in the repository: [Demo Video of DevForge.mp4](Demo%20Video%20of%20DevForge.mp4)
 
 ---
 

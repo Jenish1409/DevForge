@@ -5,11 +5,11 @@
 <h1 align="center">DevForge</h1>
 
 <p align="center">
-  <strong>Ship frontend features without waiting for the backend.</strong>
+  <strong>Ship frontend features without waiting for the backend — and know the moment your real APIs go down.</strong>
 </p>
 
 <p align="center">
-  A full-stack mock API platform that lets developers create, manage, and consume realistic mock endpoints in seconds — no server boilerplate, no stubs, no blockers.
+  A full-stack developer platform combining an <strong>API Mock Engine</strong> (create realistic mock endpoints in seconds) with <strong>Live Sentinel</strong>, an active API monitoring and incident-alerting system — no server boilerplate for mocks, no blind spots for production APIs.
 </p>
 
 <p align="center">
@@ -28,9 +28,11 @@
 
 ## 🎯 What is DevForge?
 
-DevForge solves a common pain point in modern development: **frontend teams blocked by unfinished backend APIs**.
+DevForge solves two common pain points in modern development, both under one platform:
 
-Instead of hardcoding JSON files or spinning up local Express servers, DevForge provides a hosted platform where you can:
+### 1. Frontend teams blocked by unfinished backend APIs → **Mock Engine**
+
+Instead of hardcoding JSON files or spinning up local Express servers, DevForge lets you:
 
 1. **Create a project** with an auto-generated API key
 2. **Define mock endpoints** — method, path, status code, response body, delay
@@ -38,11 +40,21 @@ Instead of hardcoding JSON files or spinning up local Express servers, DevForge 
 
 The mock endpoints are real HTTP routes that return your configured responses — complete with proper status codes, content types, and even simulated latency.
 
+### 2. Real APIs failing silently in production → **Live Sentinel (Monitoring)**
+
+Instead of finding out an API is down from a user complaint, DevForge lets you:
+
+1. **Register any API endpoint** (yours or a third party's) with an interval and auth headers
+2. **DevForge actively polls it** on a schedule, logging uptime, latency, and status
+3. **Get emailed automatically** the moment consecutive failures cross a threshold — with full incident history and per-endpoint analytics available afterward
+
+Together, the two halves cover both ends of the API lifecycle: mock what doesn't exist yet, watch what already does.
+
 ---
 
 ## ✨ Features
 
-### Core Platform
+### Mock Engine
 | Feature | Description |
 |---|---|
 | **Dynamic Mock Endpoints** | Create GET, POST, PUT, PATCH, DELETE endpoints with custom paths, status codes, and JSON/text responses |
@@ -51,7 +63,17 @@ The mock endpoints are real HTTP routes that return your configured responses �
 | **Project Isolation** | Organize endpoints into projects, each with its own namespace and API key |
 | **API Key Protection** | Optional SHA-256 hashed API key authentication per project via `X-API-Key` header |
 | **Request Logging** | Every mock request is logged with method, path, status, IP, and timestamp |
-| **Rate Limiting** | In-memory per-IP rate limiting (60 req/min) to prevent abuse |
+| **Rate Limiting** | In-memory per-IP rate limiting (60 req/min) to prevent abuse — see [note on scaling limits](#-deployment) below |
+
+### Live Sentinel (Monitoring)
+| Feature | Description |
+|---|---|
+| **Active Uptime Polling** | Background scheduler pings each registered API on a user-defined interval |
+| **Universal Auth Support** | Monitor APIs behind any auth scheme via customizable headers (Bearer token, API key, etc.) |
+| **Incident Tracking** | Automatically logs an incident on failure/timeout and tracks it through to recovery |
+| **Threshold-Based Alerting** | Emails via Brevo SMTP once consecutive failures cross a configurable threshold — no alert spam on a single blip |
+| **Uptime & Latency Analytics** | Per-API uptime percentage and average latency, plus full historical ping logs |
+| **Pause/Resume Control** | Toggle monitoring on a given API on or off without deleting its configuration |
 
 ### Performance & Reliability
 | Feature | Description |
@@ -298,6 +320,20 @@ curl https://your-backend.onrender.com/mock/<project-id>/users/me \
   -H "X-API-Key: your-project-api-key"
 ```
 
+### Monitoring (Live Sentinel)
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | `/api/v1/monitoring` | Register a new API for monitoring | JWT |
+| GET | `/api/v1/monitoring` | List all monitored APIs for current user | JWT |
+| GET | `/api/v1/monitoring/summary` | Get dashboard summary (counts, avg uptime) | JWT |
+| GET | `/api/v1/monitoring/{id}` | Get details for a specific monitored API | JWT |
+| GET | `/api/v1/monitoring/{id}/history` | Get ping history/logs for a specific API | JWT |
+| GET | `/api/v1/monitoring/{id}/incidents` | Get incident history (downtime events) | JWT |
+| PUT | `/api/v1/monitoring/{id}` | Update a monitored API's configuration | JWT |
+| DELETE | `/api/v1/monitoring/{id}` | Delete a monitored API | JWT |
+| PATCH | `/api/v1/monitoring/{id}/toggle` | Pause or resume monitoring for an API | JWT |
+
 ### Contact
 
 | Method | Endpoint | Description | Auth |
@@ -373,11 +409,12 @@ DevForge/
    ```
 5. Deploy — the `vercel.json` handles SPA routing rewrites automatically
 
+### Known Limitations at Scale
+
+- **Rate limiting is per-instance, not global.** The mock engine's rate limiter is in-memory, so if the backend is horizontally scaled to multiple instances, each instance enforces its own limit independently rather than sharing a global count. A production-scale fix would move this to a shared store (e.g. Redis-backed counters) — noted here as a known, deliberate trade-off for a single-instance deployment, not an oversight.
+- **The monitoring scheduler runs as a single in-process loop.** It doesn't yet shard checks across multiple worker instances, so it doesn't horizontally scale past what one instance's scheduler thread can handle — fine for a moderate number of monitored APIs, but a real production version would move this to a distributed job queue.
+
 ---
-
-## 🎬 Demo
-
-A demo video is included in the repository: [Demo Video of DevForge.mp4](Demo%20Video%20of%20DevForge.mp4)
 
 ---
 

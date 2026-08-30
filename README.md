@@ -20,7 +20,6 @@
   <a href="#-api-reference">API Reference</a> •
   <a href="#-project-structure">Project Structure</a> •
   <a href="#-deployment">Deployment</a> •
-  <a href="#-demo">Demo</a> •
   <a href="#%EF%B8%8F-license--intellectual-property">License & Rights</a>
 </p>
 
